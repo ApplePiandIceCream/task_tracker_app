@@ -1,0 +1,6 @@
+com\dts\app\model\Status.class
+com\dts\app\repository\TaskRepository.class
+com\dts\app\exception\GlobalExceptionHandler.class
+com\dts\app\Application.class
+com\dts\app\controller\TaskController.class
+com\dts\app\model\Task.class

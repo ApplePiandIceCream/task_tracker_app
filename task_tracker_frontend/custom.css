@@ -1,0 +1,53 @@
+
+body {
+    background: white;
+    color: #172D36;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+
+
+.card {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.custom-card {
+    background-color: #F4F9FA;
+    color: #172D36;
+    border-color: #172D36;
+    border-width: 2px;
+    border-radius: 10px;
+}
+
+.btn-primary {
+    --bs-btn-bg: #47636B;
+    --bs-btn-color: #F4F9FA;
+    --bs-btn-border-color: #47636B;
+    --bs-btn-hover-bg: #2D4A53;
+    --bs-btn-hover-border-color: #2D4A53;
+    --bs-btn-active-bg: #172D36;
+    --bs-btn-active-border-color: #172D36;
+    font-weight: 500 !important;
+}
+
+.form-control {
+    border-color: #47636B;
+}
+
+.form-control:focus {
+    border-color: #172D36;
+    border-width: 2px;
+    box-shadow: 0 0 0 0.2rem rgba(71, 99, 107, 0.25);
+}
+.form-select {
+    border-color: #47636B;
+}
+
+.form-select:focus {
+    border-color: #172D36;
+    border-width: 2px;
+    box-shadow: 0 0 0 0.2rem rgba(71, 99, 107, 0.25);
+}
+
