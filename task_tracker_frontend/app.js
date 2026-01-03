@@ -1,7 +1,10 @@
+// URL variable 
+const API_BASE_URL = "http://localhost:8080/api/tasks"
+
+const taskList = document.getElementById("task-list");
 const form = document.getElementById("taskForm");
 const successMessage = document.getElementById("successMessage");
 const errorMessage = document.getElementById("errorMessage");
-
 
 //prevent submission of past date  
 window.addEventListener("DOMContentLoaded", () => {
@@ -15,6 +18,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     //min value for date picker
     DeadlineInput.min=localISOTime;
+
+
+    //call load tasks API
+    loadTasks();
 });
 
 
@@ -51,7 +58,7 @@ form.addEventListener("submit", async (e) => {
 
     //call tasks API
     try {
-        const res = await fetch("http://localhost:8080/api/tasks", {
+        const res = await fetch(API_BASE_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -92,3 +99,38 @@ form.addEventListener("submit", async (e) => {
         errorMessage.classList.remove("d-none");
     }
 });
+
+async function loadTasks() {
+    const res = await fetch(API_BASE_URL) //MUST UPDATE THIS MUST UPDATE THIS MUST UPDATE THIS FOR DEPLOYMENT!!!!
+    const tasks = await res.json();
+
+
+    taskList.innerHTML='';
+
+    if (tasks.length == 0) {
+        taskList.textContent = "No tasks listed";
+        return
+    }
+
+    tasks.forEach(task=> {
+        const li = document.createElement("li");
+        li.classList.add("task-list", "mb-3", "p-3", "border", "rounded");
+
+        const title = document.createElement("h4");
+        title.textContent = task.title;
+
+        const desc = document.createElement("p");
+        desc.textContent = task.description;
+
+        const status = document.createElement("p");
+        status.textContent = `Status: ${task.status}`;
+
+        const deadline = document.createElement("p"); 
+        deadline.textContent = `Deadline: ${new Date(task.deadline).toLocaleString()}`;
+
+        li.append(title, desc, status, deadline);
+        taskList.appendChild(li);
+
+    });
+
+}

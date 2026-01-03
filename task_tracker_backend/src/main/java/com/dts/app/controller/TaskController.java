@@ -1,5 +1,8 @@
 package com.dts.app.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,4 +40,44 @@ public class TaskController {
         //return task and 201 status code (CREATED)
         return new ResponseEntity<>(savedTask, HttpStatus.CREATED);
     }
+
+    /* Handle HTTP GET requests- retrieves list of existing tasks */
+    @GetMapping
+    public ResponseEntity<List<Task>> getTasks() {
+        List<Task> tasks = taskRepository.findAll();
+        return ResponseEntity.ok(tasks);
+    }
+
+    
+    /* HANDLE PUT update requests */
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(
+        @PathVariable Long id, 
+        @Valid @RequestBody Task updatedTask) {
+            Optional<Task> existingTask = taskRepository.findById(id);
+
+            if (existingTask.isPresent()) {
+                Task task = existingTask.get();
+                task.setTitle(updatedTask.getTitle());
+                task.setDescription(updatedTask.getDescription());
+                task.setStatus(updatedTask.getStatus());
+                task.setDeadline(updatedTask.getDeadline());
+
+                Task saved = taskRepository.save(task);
+                return ResponseEntity.ok(saved);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+            
+        }
+    /* HANDLE DELETE delete task requests */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        if (!taskRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        } 
+        taskRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
