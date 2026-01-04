@@ -8,8 +8,8 @@ task_tracker_backend/data/*.trace.db
 .vscode/
 *.iml
 
-frontend/node_modules/
-frontend/build/
+task_tracker_frontend/node_modules/
+task_tracker_frontend/build/
 
 .DS_Store
 Thumbs.db
