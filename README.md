@@ -29,6 +29,8 @@ A lightweight **Task Manager** web application featuring a RESTful API backend a
 - Spring Data JPA 
 - H2 Database
 - Jakarta validation
+- Containerisation (Docker)
+- Deployment throguh Render (web service)
 
 ### **Frontend**
 - HTML5  
@@ -47,6 +49,12 @@ The backend exposes the following endpoints at /api/tasks:
 
 # 🚀 Getting Started
 
+Live Demo: https://applepiandicecream.github.io/task_tracker_app/ 
+
+(Please note: The backend is deployed via Render's free tier. If the app has been inactive, it may take 30-60 seconds to populate demo tasks and "wake up" on the first request.)
+
+## OR: 
+
 ## 1️⃣ Run the Backend (Spring Boot)
 
 ### **Prerequisites**
@@ -55,9 +63,9 @@ You must have:
 - Maven installed (so the `mvn` command works)
 
 ### **Start the backend**
-From the backend folder:
 
 ```bash
+cd task_tracker_backend
 mvn spring-boot:run
 ```
 
@@ -105,9 +113,9 @@ http://localhost:8080/h2-console
 The frontend is static — **no Node, npm, or build tools required**.
 
 ### **How to run it**
-1. Ensure the backend is running  
-2. Open the frontend folder  
-3. Launch the app by opening:
+1. Ensure the backend is running
+2. Locate index.html in the project root directory  
+2. Launch the app by opening:
 
 ```
 index.html
@@ -127,16 +135,15 @@ http://localhost:8080/api/tasks
 
 ```
 task_tracker_app/
-│
-├── task_tracker_frontend/
-│   ├── index.html
-│   ├── styles.css
-│   └── script.js
-│
-└── task_tracker_backend/
-    ├── data
-    ├── src/
-    └── pom.xml
+├── task_tracker_backend/   
+│   ├── src/
+│   ├── pom.xml
+│   ├── Dockerfile
+│   └── data/               
+├── index.html              
+├── script.js               
+├── style.css                            
+└── README.md
 ```
 
 ## 🛠️ Key Implementation Details
