@@ -47,7 +47,7 @@ public class Application {
                 ));
 
                 repository.save(new Task(
-                    "Sort applicatiuon for Wayne Enterprises", 
+                    "Sort application for Wayne Enterprises", 
                     "Write cover letter",
                     Status.COMPLETED,
                     LocalDateTime.now().plusDays(10)
