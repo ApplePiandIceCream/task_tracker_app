@@ -129,11 +129,23 @@ form.addEventListener("submit", async (e) => {
 //Load tasks in list card
 async function loadTasks() {
     const res = await fetch(API_BASE_URL) //MUST UPDATE THIS MUST UPDATE THIS MUST UPDATE THIS FOR DEPLOYMENT!!!!
-    const tasks = await res.json();
+    taskContainer.innerHTML = '<p class = "loading-text">Connecting to server... (waking up cloud host- please wait)</p>';
+    try {
+        const res = await fetch(API_BASE_URL);
+        
+        if (!res.ok) {
+            throw new Error("Server is still warming up...");
+        }
 
-    tasksAll = tasks;
+        const tasks = await res.json();
+        tasksAll = tasks;
+        renderTasks(tasks);
 
-    renderTasks(tasks);
+    } catch (err) {
+        console.log("Backend is still sleeping, retrying in 5 seconds...");
+        
+        setTimeout(loadTasks, 5000);
+    }
 }
 
 
