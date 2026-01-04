@@ -1,11 +1,10 @@
 
 body {
-    background: white;
-    color: #172D36;
+    background: #ffffff;
+    color: #190726;
     font-family: system-ui, sans-serif;
     line-height: 1.5;
 }
-
 
 
 .card {
@@ -14,21 +13,28 @@ body {
 }
 
 .custom-card {
-    background-color: #F4F9FA;
-    color: #172D36;
-    border-color: #172D36;
-    border-width: 2px;
+    background-color: #f2e9f9;
+    color: #190726;
+    border-color: #190726;
+    border-width: 1px;
     border-radius: 10px;
 }
 
+.custom-filter-card {
+    color: #190726;
+    border-color: #190726;
+    background-color: #eff9e9;
+    border-width: 2px;
+    border-radius: 10px;
+}
 .btn-primary {
-    --bs-btn-bg: #47636B;
-    --bs-btn-color: #F4F9FA;
-    --bs-btn-border-color: #47636B;
-    --bs-btn-hover-bg: #2D4A53;
-    --bs-btn-hover-border-color: #2D4A53;
-    --bs-btn-active-bg: #172D36;
-    --bs-btn-active-border-color: #172D36;
+    --bs-btn-bg: #320e4c;
+    --bs-btn-color: #f2e9f9;
+    --bs-btn-border-color: #320e4c;
+    --bs-btn-hover-bg: #190726;
+    --bs-btn-hover-border-color: #190726;
+    --bs-btn-active-bg: #0c0413;
+    --bs-btn-active-border-color: #0c0413;
     font-weight: 500 !important;
 }
 
@@ -37,16 +43,16 @@ body {
 }
 
 .form-control:focus {
-    border-color: #172D36;
+    border-color: #190726;
     border-width: 2px;
     box-shadow: 0 0 0 0.2rem rgba(71, 99, 107, 0.25);
 }
 .form-select {
-    border-color: #47636B;
+    border-color: #f2e9f9;
 }
 
 .form-select:focus {
-    border-color: #172D36;
+    border-color: #f2e9f9;
     border-width: 2px;
     box-shadow: 0 0 0 0.2rem rgba(71, 99, 107, 0.25);
 }

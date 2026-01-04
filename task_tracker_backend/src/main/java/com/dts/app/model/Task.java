@@ -64,7 +64,9 @@ public class Task {
     }
 
     //Getters and setters: 
-
+    public Long getId() {
+        return id;
+    }
     public String getTitle() {
         return title;
     }

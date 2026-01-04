@@ -1,24 +1,34 @@
-# Task Management Application
+# 📝 Task Manager
 
-A simple full-stack task management application built as part of a technical assessment.  
-The project consists of:
+![Java](https://img.shields.io/badge/Java-17-blue) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.1-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
-- A **Java Spring Boot backend** providing a RESTful API
-- A **static frontend** built with **HTML, CSS, JavaScript, and Bootstrap**
-- A **persistent H2 file-based database**
+A simple **Task Manager web application** built with **Java Spring Boot** for the backend and **Vanilla JS + Bootstrap 5** for the frontend. Allows users to create, edit, delete, and filter tasks.
 
-This application allows users to  create tasks.
+---
+
+## ⚡ Features
+
+- **CRUD operations**: Create, Read, Update, Delete tasks via a REST API
+- **Inline editing**: Edit tasks directly in the task list without navigating to a new page
+- **Filtering & sorting**:
+  - Search by task title
+  - Sort by deadline (soonest/latest)
+  - Filter by status (Pending, In Progress, Awaiting Response, Completed)
+- **Responsive UI**: Bootstrap cards for tasks, works on desktop and mobile
+- **Validation**: Client-side validation for deadlines and required fields
+- **Confirmation prompts** for deletion
 
 ---
 
 ## 🧰 Tech Stack
 
 ### **Backend**
-- Java 17+
-- Spring Boot 3
-- Maven
-- H2 Database (file mode, persistent)
-- Spring Web / Validation
+- Java 17+ 
+- Spring Boot 3 
+- Maven 
+- Spring Data JPA 
+- H2 Database
+- Spring Web & Validation (Jakarta)
 
 ### **Frontend**
 - HTML5  

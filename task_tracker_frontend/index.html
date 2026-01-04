@@ -52,19 +52,55 @@
 
                 <div class="mb-3">
                     <label class="form-label">Deadline</label>
-                    <input id="deadline" type="datetime-local" class="form-control" required/>
+                    <input id="deadline" type="datetime-local" class="form-control" max="9999-01-01T16:30" required/>
                 </div>
 
                 <button class="btn btn-primary w-100 mt-3">Create Task</button>
             </form>
         </div>
     </div>
-    <h2 class="text-center mb-4 mt-4"> Task List: </h2>
-    <div class="card shadow-sm custom-card">
-        <div class="card-body">
-            <ul id = "task-list" class="list-group"></ul>
+    <h2 class="text-center mb-2 mt-4"> My Tasks: </h2>
+    <div class="row justify-content-center pt-2">
+        <div class="col-12 col-md-6 mb-4">
+            <div class="card custom-filter-card shadow-sm h-100">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Filter and sort</h4>
+                    <div class="mb-3">
+                        <label for="filterSearch" class="form-label"> Search by task title</label>
+                        <input type="text" id="filterSearch" class="form-control" placeholder="Enter task title...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="filterSort" class="form-label"> Sort by Deadline</label>
+                        <select id="filterSort" class="form-select">
+                            <option value="">None</option>
+                            <option value="deadline_asc">Soonest First</option>
+                            <option value="deadline_desc">Latest First</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="filterStatus" class="form-label"> Filter by status</label>
+                        <select id="filterStatus" class="form-select">
+                            <option value = "">All statuses</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="AWAITING_RESPONSE">Awaiting Response</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+    
+                    <button id="filterClear" class="btn btn-secondary mt-2 btn-sm">
+                        Clear filter
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <ul id = "task-list" class="list-unstyled"></ul>
+        </div>
+    </div>  
 </div>
 
 <script src="app.js"></script>
