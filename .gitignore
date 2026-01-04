@@ -1,5 +1,5 @@
-backend/data/*.mv.db
-backend/data/*.trace.db
+task_tracker_backend/data/*.mv.db
+task_tracker_backend/data/*.trace.db
 
 **/target/
 *.class
