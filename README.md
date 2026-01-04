@@ -2,7 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-17-blue) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.1-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
-A simple **Task Manager web application** built with **Java Spring Boot** for the backend and **Vanilla JS + Bootstrap 5** for the frontend. Allows users to create, edit, delete, and filter tasks.
+A lightweight **Task Manager** web application featuring a RESTful API backend and a dynamic, responsive frontend. This project demonstrates clean CRUD (Create, Read, Update, Delete) implementation and client-side responsive filtering. 
 
 ---
 
@@ -28,13 +28,20 @@ A simple **Task Manager web application** built with **Java Spring Boot** for th
 - Maven 
 - Spring Data JPA 
 - H2 Database
-- Spring Web & Validation (Jakarta)
+- Jakarta validation
 
 ### **Frontend**
 - HTML5  
 - CSS3  
 - JavaScript (vanilla)
 - Bootstrap 5
+
+### 📡 API Reference
+The backend exposes the following endpoints at /api/tasks:
+- GET: /api/tasks (Retrieve all tasks)
+- POST: /api/tasks (Create a new task- Validates JSON body)
+- PUT: /api/tasks/{id} (Update an existing task by ID) 
+- DELETE: /api/tasks/{id} (Remove a task by ID)
 
 ---
 
@@ -116,60 +123,31 @@ http://localhost:8080/api/tasks
 
 ---
 
-# 📡 API Overview
-
-
-### **POST /api/tasks**
-Create a new task  
-Requires valid JSON body and passes server-side validation
-
----
-
-# 🛠️ Backend Features
-
-### ✔️ **RESTful CRUD API**
-
-### ✔️ **Validation**
-Uses Jakarta Bean Validation:
-- `@NotNull`
-- `@Size`
-- `@Pattern`
-- etc.
-
-### ✔️ **Global Exception Handling**
-Custom handler for:
-- Validation errors (400)
-- Malformed JSON
-- Generic server exceptions
-
----
-
 # 📁 Project Structure
 
 ```
-junior-dev-task/
+task_tracker_app/
 │
-├── junior-dev-task-frontend/
+├── task_tracker_frontend/
 │   ├── index.html
 │   ├── styles.css
 │   └── script.js
 │
-└── junior-dev-task-backend/
+└── task_tracker_backend/
+    ├── data
     ├── src/
-    ├── pom.xml
-    └── application.properties
+    └── pom.xml
 ```
 
+## 🛠️ Key Implementation Details
+- Global Exception Handling: The backend includes a custom handler to manage validation errors (400) and malformed requests, returning clear error messages to the UI.
+
+- CORS Configuration: Enabled via @CrossOrigin to allow the frontend to communicate with the API while running on different local environments.
+
+- Separation of Concerns: The project follows a clean architecture, separating the database layer (JPA), the business logic (Controller), and the presentation layer (Vanilla JS).
+
 ---
 
-# 📝 Notes
-
-- This application is intentionally minimal and designed to demonstrate clear code structure, API design, and full-stack integration.
-- No personal information is included, in line with Civil Service **name-blind** application requirements.
-
----
-
-# ✔️ Ready for Review
-
-The project is now fully runnable on any machine with Java 17+ and Maven, with no external dependencies.
+## 📝 Author
+Created as a demonstration of full-stack proficiency, focusing on clean code, RESTful principles, and responsive UI design.
 
