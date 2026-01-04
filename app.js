@@ -128,9 +128,9 @@ form.addEventListener("submit", async (e) => {
 
 //Load tasks in list card
 async function loadTasks() {
-    const taskContainer = document.getElementById('task-list');
-    if (taskContainer) {    
-        taskContainer.innerHTML = '<p class = "loading-text">Connecting to server... (waking up cloud host- please wait)</p>';
+    
+    if (taskList) {    
+        taskList.innerHTML = '<p class = "loading-text">Connecting to server... (waking up cloud host- please wait)</p>';
     }
     try {
         const res = await fetch(API_BASE_URL);
