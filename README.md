@@ -23,14 +23,13 @@ A lightweight **Task Manager** web application featuring a RESTful API backend a
 ## 🧰 Tech Stack
 
 ### **Backend**
-- Java 17+ 
+- Java 21 
 - Spring Boot 3 
 - Maven 
 - Spring Data JPA 
 - H2 Database
 - Jakarta validation
-- Containerisation (Docker)
-- Deployment throguh Render (web service)
+- Deployment through Railway (web service)
 
 ### **Frontend**
 - HTML5  
@@ -51,7 +50,7 @@ The backend exposes the following endpoints at /api/tasks:
 
 Live Demo: https://applepiandicecream.github.io/task_tracker_app/ 
 
-(Please note: The backend is deployed via Render's free tier. If the app has been inactive, it may take 30-60 seconds to populate demo tasks and "wake up" on the first request.)
+Backend: Hosted on Railway (Always-on / No wake-up delay)- using railway removes the cold start delay that other free tiers have.  
 
 ## OR: 
 
@@ -138,7 +137,6 @@ task_tracker_app/
 ├── task_tracker_backend/   
 │   ├── src/
 │   ├── pom.xml
-│   ├── Dockerfile
 │   └── data/               
 ├── index.html              
 ├── script.js               
