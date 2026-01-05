@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 //Controller class handles Task related API endpoints. Entry point for the frontend app to interact with task data 
 
 //@CrossOriginal allows request from all domains (required due to front and backend having different ports)
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "https://applepiandicecream.github.io") 
 @RestController
 
 // mapp all methods in controller to base URL path /api/tasks
