@@ -4,7 +4,7 @@ let API_BASE_URL;
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:") {
     API_BASE_URL = "http://localhost:8080/api/tasks";
 } else {
-    API_BASE_URL = "https://task-tracker-app-w02n.onrender.com/api/tasks"; 
+    API_BASE_URL = "https://tasktrackerapp-production-a6f9.up.railway.app/api/tasks";
 }
 
 const taskList = document.getElementById("task-list");
