@@ -9,9 +9,9 @@
     </parent>
 
   <groupId>com.dts.app</groupId>
-  <artifactId>junior-dev-task-backend</artifactId>
+  <artifactId>task_tracker_backend</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>junior-dev-task-backend</name>
+  <name>task_tracker_backend</name>
 
   <dependencies>
         <!-- Web Starter -->
