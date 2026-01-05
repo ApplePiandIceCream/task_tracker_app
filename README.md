@@ -1,6 +1,6 @@
 # 📝 Task Manager
 
-![Java](https://img.shields.io/badge/Java-17-blue) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.1-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+![Java](https://img.shields.io/badge/Java-21-blue) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.1-green) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
 A lightweight **Task Manager** web application featuring a RESTful API backend and a dynamic, responsive frontend. This project demonstrates clean CRUD (Create, Read, Update, Delete) implementation and client-side responsive filtering. 
 
