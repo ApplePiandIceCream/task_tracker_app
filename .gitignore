@@ -13,3 +13,9 @@ task_tracker_frontend/build/
 
 .DS_Store
 Thumbs.db
+
+.env
+*.local
+helpdesk_logs/
+*.log
+

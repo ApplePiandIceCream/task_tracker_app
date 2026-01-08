@@ -35,8 +35,6 @@ public class Application {
             User testUser1;
             User testUser;
 
-            
-
             if (userRepository.count() == 0) {
 
             testUser1 = new User("bob", passwordEncoder.encode("passwordLong123"));
@@ -46,9 +44,9 @@ public class Application {
             }
 
             else {
-                testUser1 = userRepository.findByUsername("Bob")
+                testUser1 = userRepository.findByUsername("bob")
                     .orElseThrow(() -> new RuntimeException("Bob not found"));
-                testUser = userRepository.findByUsername("Bill")
+                testUser = userRepository.findByUsername("bill")
             .orElseThrow(() -> new RuntimeException("Bill not found"));
             }
 

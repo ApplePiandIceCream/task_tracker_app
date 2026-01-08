@@ -41,6 +41,7 @@ public class TaskController {
     @Valid- trigger server-side validation checks 
     @return A ResponseEntity- contains new saved Task objecct and HTTP status 201*/
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
         
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

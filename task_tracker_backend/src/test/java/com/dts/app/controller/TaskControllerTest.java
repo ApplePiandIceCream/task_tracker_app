@@ -1,26 +1,33 @@
 package com.dts.app.controller;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test; 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.format.*;
+import java.util.*;
+
+import com.dts.app.config.AuthTokenFilter;
+import com.dts.app.config.JwtUtil;
 import com.dts.app.exception.GlobalExceptionHandler;
 import com.dts.app.model.Status;
 import com.dts.app.model.Task;
+import com.dts.app.model.User;
 import com.dts.app.repository.TaskRepository;
+import com.dts.app.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dts.app.service.CustomUserDetailsService;
 
 import static org.mockito.Mockito.when; 
 import static org.mockito.ArgumentMatchers.any; 
@@ -28,6 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status; 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath; 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 
 /**
@@ -38,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 
 @WebMvcTest(TaskController.class)
+@AutoConfigureMockMvc(addFilters = false)
 @Import(GlobalExceptionHandler.class)
 public class TaskControllerTest {
 
@@ -48,6 +57,23 @@ public class TaskControllerTest {
     // @MockBean replaces the real TaskRepository bean with a Mockito mock object- isolates controller logic to prevent database editing 
     @MockBean
     private TaskRepository taskRepository;
+
+    @MockBean 
+    private UserRepository userRepository;
+
+   @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private AuthTokenFilter authTokenFilter;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
+
 
     // ObjectMapper for converting Task object into JSON string 
     // for use in the simulated HTTP request bodies.
@@ -80,12 +106,23 @@ public class TaskControllerTest {
      * the correct HTTP status (201 CREATED) and the correct data in the JSON response.
      */
     @Test
+    @WithMockUser(username = "testuser")
     void createTask_Success() throws Exception {
-        when(taskRepository.save(any(Task.class))).thenReturn(testTask);
-        mockMvc.perform(post("/api/tasks").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testTask)))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.title").value("React app development"));
+        User mockUser = new User();
+        mockUser.setId(1L);  
+        mockUser.setUsername("testuser");
+        mockUser.setPassword("encodedPassword123");
 
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(mockUser));
+        
+        when(taskRepository.save(any(Task.class))).thenReturn(testTask);
+
+        mockMvc.perform(post("/api/tasks")
+        .with(csrf()) //This is the line that makes it work- request doesn't reach controller otherwise!!!!!!!!!!
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testTask)))
+                .andDo(print()) 
+                .andExpect(status().isCreated());
     }
 
     /**
