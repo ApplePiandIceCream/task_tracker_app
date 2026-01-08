@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
@@ -46,6 +48,10 @@ public class Task {
     @NotNull(message = "You must provide a task deadline")
     private LocalDateTime deadline;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
+
     //Constructor- JPA: 
     public Task() {
     }
@@ -55,12 +61,14 @@ public class Task {
      * @param description- optional - description of task 
      * @param status - required- current task status 
      * @param deadline- required - deadline for completion of task 
+     * @param user- this is the user object
     */
-    public Task(String title, String description, Status status, LocalDateTime deadline) {
+    public Task(String title, String description, Status status, LocalDateTime deadline, User user) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.deadline = deadline;
+        this.user = user;
     }
 
     //Getters and setters: 
@@ -83,6 +91,10 @@ public class Task {
         return deadline;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -103,5 +115,8 @@ public class Task {
         this.deadline = newDeadline;
     }
 
+    public void setUser(User newUser) {
+    this.user = newUser;
+    }
 }
 
