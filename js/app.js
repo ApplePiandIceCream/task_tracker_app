@@ -265,7 +265,6 @@ window.addEventListener("DOMContentLoaded", () => {
 //Load tasks to pass to renderTasks() 
 async function loadTasks() {
     const token = localStorage.getItem("jwtToken");
-    if (!token) return;
     try {
         const res = await fetch(API_BASE_URL, {
             method: "GET",
@@ -274,13 +273,6 @@ async function loadTasks() {
                 "Content-Type": "application/json"
             }
         });
-
-        // if expired or invalid token:
-        if (res.status === 401 || res.status === 403) {
-            handleAuthError();
-            return;
-        }
-
         //fetch JSON data 
         const tasks = await res.json();
         tasksAll = tasks;
@@ -528,14 +520,3 @@ function updateNav() {
         if (userDisplay) userDisplay.textContent = `${username || 'User'}`;
     }
 };
-
-// handle lack of auth by updating nav bar to remove usre details 
-function handleAuthError() {
-    localStorage.removeItem("jwtToken");
-    localStorage.removeItem("username");
-    updateNav();
-    // redirect if location is 'index'
-    if (window.location.pathname.includes("index") || window.location.pathname === "/") {
-        window.location.href = "login.html";
-    }
-}
