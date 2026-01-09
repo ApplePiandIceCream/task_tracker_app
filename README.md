@@ -145,7 +145,7 @@ task_tracker_app/
 │   └── pom.xml               
 ├── index.html              
 ├── app.js               
-├── style.css                            
+├── custom.css                            
 └── README.md
 ```
 
@@ -165,4 +165,4 @@ Created as a demonstration of full-stack proficiency, focusing on clean code, RE
 
 
 ## ⚖️ License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
