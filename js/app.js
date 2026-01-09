@@ -1,5 +1,5 @@
 (function() {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const path = window.location.pathname;
     const isAtHome = path.endsWith("/") || path.includes("index") || path.endsWith("task_tracker_app");
 
@@ -67,8 +67,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("jwtToken");
-            localStorage.removeItem("username");
+            sessionStorage.removeItem("jwtToken");
+            sessionStorage.removeItem("username");
 
             alert("You have been logged out");
 
@@ -96,8 +96,8 @@ window.addEventListener("DOMContentLoaded", () => {
                     const data = await response.text();
                     const cleanToken = data.replace(/^"|"$/g, '');
 
-                    localStorage.setItem("jwtToken", cleanToken);
-                    localStorage.setItem("username", username);
+                    sessionStorage.setItem("jwtToken", cleanToken);
+                    sessionStorage.setItem("username", username);
 
                     alert("Login successful!");
                     //redirect to index page
@@ -208,7 +208,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     method: method,
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+                        "Authorization": "Bearer " + sessionStorage.getItem("jwtToken")
                     },
                     body: JSON.stringify(taskData),
                 });
@@ -264,7 +264,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //Load tasks to pass to renderTasks() 
 async function loadTasks() {
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     if (!token) return;
     try {
         const res = await fetch(API_BASE_URL, {
@@ -399,7 +399,7 @@ function renderTasks(tasks) {
                     const res = await fetch(`${API_BASE_URL}/${task.id}`, {
                         method: "DELETE",
                         headers: {
-                            "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+                            "Authorization": "Bearer " + sessionStorage.getItem("jwtToken")
                         }
                     });
 
@@ -448,7 +448,7 @@ function renderTasks(tasks) {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+                        "Authorization": "Bearer " + sessionStorage.getItem("jwtToken")
                     },
                     body: JSON.stringify(updatedTask)
                 });
@@ -507,8 +507,8 @@ function applyFilter() {
 
 //navigation update- if logged in, show username and logout. If logged out, show login and register
 function updateNav() {
-    const token = localStorage.getItem("jwtToken");
-    const username = localStorage.getItem("username");
+    const token = sessionStorage.getItem("jwtToken");
+    const username = sessionStorage.getItem("username");
     const currentPage = window.location.pathname;
 
     const loggedInGroup = document.getElementById("logged-in-group");
