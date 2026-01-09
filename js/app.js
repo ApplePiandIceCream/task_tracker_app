@@ -1,11 +1,9 @@
 (function() {
     const token = localStorage.getItem("jwtToken");
-    const fullPath = window.location.pathname;
-    //const currentFile = window.location.pathname.split("/").pop();
-    //const isIndex = currentFile === "index.html" || currentFile === "" || currentFile === "index";
-    const isPath = -fullPath.includes("index") || fullPath.endsWith("/");
+    const currentFile = window.location.pathname.split("/").pop();
+    const isIndex = currentFile === "index.html" || currentFile === "" || currentFile === "index";
 
-    if (isPath && !token) {
+    if (isIndex && !token) {
         window.location.href = "login.html";
     }
 })();
