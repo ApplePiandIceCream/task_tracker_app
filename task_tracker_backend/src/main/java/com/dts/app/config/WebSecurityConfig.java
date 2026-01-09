@@ -69,7 +69,7 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable()) // Disable CSRF
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500")); // your frontend
+                config.setAllowedOrigins(List.of("https://applepiandicecream.github.io", "http://127.0.0.1:5500", "http://localhost:5500")); // your frontend
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 config.setAllowCredentials(true);
