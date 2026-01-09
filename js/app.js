@@ -1,7 +1,7 @@
 (function() {
     const token = sessionStorage.getItem("jwtToken");
-    const path1 = window.location.pathname;
-    const isAtHome = path1.endsWith("/") || path1.includes("index") || path1.endsWith("task_tracker_app");
+    const path = window.location.pathname;
+    const isAtHome = path.endsWith("/") || path.includes("index") || path.endsWith("task_tracker_app");
 
     if (isAtHome && !token) {
         window.location.href = "login.html";
