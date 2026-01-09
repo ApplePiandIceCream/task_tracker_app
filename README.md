@@ -9,6 +9,9 @@ A lightweight **Task Manager** web application featuring a RESTful API backend a
 ## ⚡ Features
 
 - **CRUD operations**: Create, Read, Update, Delete tasks via a REST API
+- **JWT Authentication**: Secure user login and registration with JSON Web Tokens
+- **Session- Based Persistence**: Tokens are stored in sessionStorage for automatic logout on tab close, enhancing security
+- **Protected API Endpoints**: Backend routes are secured with Spring Security, requiring a valid Bearer token for all CRUD operations
 - **Inline editing**: Edit tasks directly in the task list without navigating to a new page
 - **Filtering & sorting**:
   - Search by task title
@@ -23,11 +26,12 @@ A lightweight **Task Manager** web application featuring a RESTful API backend a
 ## 🧰 Tech Stack
 
 ### **Backend**
-- Java 21 
-- Spring Boot 3 
+- Java 21/ Spring Boot 3 
+- Spring Security 6 
+- jjwt
 - Maven 
 - Spring Data JPA 
-- H2 Database
+- PostgreSQL
 - Jakarta validation
 - Deployment through Railway (web service)
 
@@ -39,10 +43,22 @@ A lightweight **Task Manager** web application featuring a RESTful API backend a
 
 ### 📡 API Reference
 The backend exposes the following endpoints at /api/tasks:
-- GET: /api/tasks (Retrieve all tasks)
-- POST: /api/tasks (Create a new task- Validates JSON body)
-- PUT: /api/tasks/{id} (Update an existing task by ID) 
-- DELETE: /api/tasks/{id} (Remove a task by ID)
+- GET: `/api/tasks` (Retrieve all tasks)
+- POST: `/api/tasks` (Create a new task- Validates JSON body)
+- PUT: `/api/tasks/{id}` (Update an existing task by ID) 
+- DELETE: `/api/tasks/{id}` (Remove a task by ID)
+Authentication endpoints: 
+- POST: `/api/auth/signup` (Create new account)
+- POST `/api/auth/signin` (log into existing account)
+All task endpoints require an Authorization: Bearer <token> header
+
+---
+
+## 🔐 Security Implementation
+- **Password Hashing**: Utilizes BCrypt for secure storage of user credentials.
+- **JWT Filtering**: A custom JWT Filter intercepts every request to validate the token before allowing access to the controller.
+- **CORS Management**: Fine-tuned CORS configuration to allow secure communication between the Railway-hosted API and the GitHub Pages frontend.
+- **Client-Side Guards**: Implemented a "Session Guard" in JavaScript to redirect unauthenticated users and clear expired sessions automatically.
 
 ---
 
@@ -81,31 +97,21 @@ http://localhost:8080/api/tasks
 
 ---
 
-## 🗄️ Database (H2 File Mode)
+## 🗄️ Database (PostgreSQL)
 
-The backend uses a persistent file-based H2 database, configured using:
+The application uses PostgreSQL. Data remains secure and persistent across sever restarts and deployments.
 
-```
-spring.datasource.url=jdbc:h2:file:./data/tasksdb
-```
+- **Production**: Hosted via Railway's managed PostgreSQL service.
 
-This creates files such as:
+- **Local Development**: The app connects to a local PostgreSQL instance via application.properties
+Ensure you have a PostgreSQL instance running and update the src/main/resources/application.properties with your local credentials:
 
-```
-/data/tasksdb.mv.db
-```
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_db_name
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 
-Your data **persists across server restarts**.
 
-You may access the database console at:
 
-```
-http://localhost:8080/h2-console
-```
-
-(Use the same JDBC URL as above.)
-
----
 
 ## 2️⃣ Run the Frontend (HTML / JS)
 
@@ -113,7 +119,7 @@ The frontend is static — **no Node, npm, or build tools required**.
 
 ### **How to run it**
 1. Ensure the backend is running
-2. Locate index.html in the project root directory  
+2. Locate login.html (or index.html) in the project root directory  
 2. Launch the app by opening:
 
 ```
@@ -136,10 +142,9 @@ http://localhost:8080/api/tasks
 task_tracker_app/
 ├── task_tracker_backend/   
 │   ├── src/
-│   ├── pom.xml
-│   └── data/               
+│   └── pom.xml               
 ├── index.html              
-├── script.js               
+├── app.js               
 ├── style.css                            
 └── README.md
 ```
@@ -151,8 +156,13 @@ task_tracker_app/
 
 - Separation of Concerns: The project follows a clean architecture, separating the database layer (JPA), the business logic (Controller), and the presentation layer (Vanilla JS).
 
+- Environment-Aware API Routing: The frontend automatically detects the environment (Local vs. Production) to route API calls to the correct base URL.
+
 ---
 
 ## 📝 Author
 Created as a demonstration of full-stack proficiency, focusing on clean code, RESTful principles, and responsive UI design.
 
+
+## ⚖️ License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
