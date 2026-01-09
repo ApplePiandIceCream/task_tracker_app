@@ -504,6 +504,7 @@ function applyFilter() {
 function updateNav() {
     const token = localStorage.getItem("jwtToken");
     const username = localStorage.getItem("username");
+    const currentPage = window.location.pathname;
 
     const loggedInGroup = document.getElementById("logged-in-group");
     const loggedOutGroup = document.getElementById("logged-out-group");
@@ -512,6 +513,10 @@ function updateNav() {
     if (!token) {
         if (loggedInGroup) loggedInGroup.classList.add("d-none");
         if (loggedOutGroup) loggedOutGroup.classList.remove("d-none");
+        const isAuthPage = currentPage.includes("login") || currentPage.includes("register");
+        if (!isAuthPage) {
+            window.location.href = "login.html";
+        }
         return;   
     }
     else {
