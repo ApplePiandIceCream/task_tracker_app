@@ -9,6 +9,11 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * Utility class - manages the lifecycle of JSON Web Tokens
+ * Responsible for token generation, parsing, and validation
+ */
+
 @Component
 public class JwtUtil {
     @Value("${jwt.secret}") 
@@ -17,12 +22,19 @@ public class JwtUtil {
     private int jwtExpirationMs;
     private SecretKey key;
 
+    /**
+     * Post-construction initialisation to prepare HMAC SHA key.
+     */
     @PostConstruct
     public void init() {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    //generate a JWT token for user
+    /**
+     * Generates a signed JWT for a given username
+     * * @param username - subject of the token
+     * @return - compact URL-safe JWT string
+     */
     public String generateToken(String username) {
         return Jwts.builder().setSubject(username).setIssuedAt(new Date())
         .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
@@ -30,13 +42,22 @@ public class JwtUtil {
         .compact();
     }
 
-    //Get username from the JWT token 
+    /**
+     * Extracts the username from a valid JWT
+     * * @param token - JWT to parse
+     * @return - username contained in the token
+     * @throws io.jsonwebtoken.JwtException if the token is invalid/ tampered with
+     */
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
             .parseClaimsJws(token).getBody().getSubject();
     }
-    //Validate the JWT tokeN: 
-
+    
+    /**
+     * Validates the JWT against its signature and expiration date
+     * * @param token - JWT string to validate
+     * @return true if the token is valid,otherwise false 
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);

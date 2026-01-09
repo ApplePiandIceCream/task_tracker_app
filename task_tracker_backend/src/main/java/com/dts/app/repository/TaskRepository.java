@@ -13,8 +13,8 @@ import java.util.List;
  */
 @Repository
 // JpaRepository<Task, Long>:
-// 1. Task: Specifies Entity type this repository manages.
-// 2. Long: Specifies data type of the Entity's primary key (id field).
+// Task (Entity type the repository manages)
+// Long (data type of Entity's primary key (id field))
 public interface TaskRepository extends JpaRepository<Task, Long> {
     //find tasks for specific user
     List<Task> findByUserId(Long id);

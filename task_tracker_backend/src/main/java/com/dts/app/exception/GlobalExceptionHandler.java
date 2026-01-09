@@ -10,23 +10,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-/* global Exception handler for REST API
-@RestControllerAdvice means class can handle expections thrown from any @RestController */
+/** global Exception handler for REST API
+@RestControllerAdvice means class can handle expections thrown from any @RestController across app
+*/
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**Handle exceptions throw when @Valid fails 
     @param ex - The exception containing validation errors 
-    @return A map of field names to their specific error messages and 400 BAD_REQUEST status*/
+    @return A map of field names to their specific error messages and 400 BAD_REQUEST status
+    */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
-
         ///map to store the errors in the format: {"fieldName": "errorMessage"}
         Map<String, String> errors = new HashMap<>();
 
-        // Iterate over all field errors collected by the validation process
+        // Extract all field errors collected by the validation result
         ex.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage())
         );
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleInvalidFormat(HttpMessageNotReadableException ex) {
         Map<String, String> error = new HashMap<>();
 
-        //specific error message to front end 
+        //specific error message to front end re date format
         error.put("deadline", "Invalid date format. Please use yyyy-MM-dd'T'HH:mm");
 
         //Return HTTP 400 bad request 

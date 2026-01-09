@@ -7,8 +7,8 @@
         window.location.href = "login.html";
     }
 })();
-console.log("Script loaded!");
-// URL variable 
+
+// URL variables- local or deployed.  
 let API_BASE_URL;
 
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:") {
@@ -32,6 +32,7 @@ if (window.location.hostname === "localhost" || window.location.hostname === "12
 }
 
 
+//constants
 const taskList = document.getElementById("task-list");
 const successMessage = document.getElementById("successMessage");
 const errorMessage = document.getElementById("errorMessage");
@@ -41,6 +42,7 @@ const filterSort = document.getElementById("filterSort");
 const filterStatus = document.getElementById("filterStatus");
 const filterClear = document.getElementById("filterClear");
 
+//status label formatting
 const statusLabel = {
     "PENDING": "Pending",
     "IN_PROGRESS": "In Progress",
@@ -51,15 +53,17 @@ const statusLabel = {
 
 let editingTaskId = null;
 let tasksAll = [];
+
+//get URL path 
 const path = window.location.pathname.split("/").pop();
 
-//prevent submission of past date  
+//DOM CONTENT LOADED 
 window.addEventListener("DOMContentLoaded", () => {
-
+//remove protected from body- here only to prevent reloading when clicking on logo link
     document.body.classList.remove("protected");
-    
+    //update navigation based on logged in/out
     updateNav();
-
+    //event listener for logout button 
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
@@ -71,17 +75,15 @@ window.addEventListener("DOMContentLoaded", () => {
             window.location.href = "login.html";
         })
     }
-    
-    
-    // Get HTML input element for deadline
+    // Login page event listener
     if (path.includes("login")) {
         const loginForm = document.getElementById("login");
         if (loginForm) {
             loginForm.addEventListener("submit", async (e) => {
                 e.preventDefault();
+                //convert username to lower case for processing 
                 const username = document.getElementById("username").value.toLowerCase();
                 const password = document.getElementById("password").value;
-                console.log("Attempting login for:", username);
                 try {
                     const response = await fetch(API_LOGIN_URL, {
                         method: "POST",
@@ -90,31 +92,26 @@ window.addEventListener("DOMContentLoaded", () => {
                     });
 
                     if (!response.ok) throw new Error("Login Failed");
-                    
-
+                    //format data jwt token and store
                     const data = await response.text();
-                    console.log("Raw Response:", data);
                     const cleanToken = data.replace(/^"|"$/g, '');
 
-                    console.log("Value to be saved:", cleanToken);
                     localStorage.setItem("jwtToken", cleanToken);
                     localStorage.setItem("username", username);
-                    console.log("Token saved to storage : ", localStorage.getItem("jwtToken"));
 
                     alert("Login successful!");
+                    //redirect to index page
                     window.location.href = "index.html";
 
                 } catch (err) {
                     const loginError = document.getElementById("loginError");
                     loginError.style.display = "block";
                     loginError.textContent = err.message;
-
                 }
-
             });
-
         }
     }
+    //registration path login and event listener
     if (path.includes("register")) {
 
         const registerForm = document.getElementById("registerF");
@@ -125,12 +122,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 const username = document.getElementById("username").value.toLowerCase();
                 const password = document.getElementById("password").value;
                 const passwordConfirm = document.getElementById("passwordConfirm").value;
-
+                //error- notify user if username is less than 3 characters 
                 if (username.length < 3) {
                     const usernameError = document.getElementById("usernameError");
                     usernameError.style.display = "block";
                     usernameError.textContent = "Username must be a minimum of 3 characters!"
                 }
+                //error- notify users if passwords don't match. 
                 if (password !== passwordConfirm) {
                     const passwordError = document.getElementById("passwordError");
                     passwordError.style.display = "block";
@@ -149,6 +147,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                     const msg = await response.text();
                     alert(msg);
+                    //redirect to login if successfully registered
                     window.location.href = "login.html";
                 }
                 catch (err) {
@@ -160,7 +159,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-
+    // main tasks page and event listeners
     if (path.includes("index")) {
         const form = document.getElementById("taskForm");
         const DeadlineInput = document.getElementById("deadline");
@@ -169,13 +168,11 @@ window.addEventListener("DOMContentLoaded", () => {
         const now = new Date();
         //convert current time to YY-MM-DDTHH:MM format
         const localISOTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-
         //min value for date picker
         DeadlineInput.min = localISOTime;
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-
             // Hide messages before processing 
             successMessage.classList.add("d-none");
             errorMessage.classList.add("d-none");
@@ -193,7 +190,6 @@ window.addEventListener("DOMContentLoaded", () => {
             }
 
             const finalDeadlineStr = deadlineVal; //validated string- used due to issues with debugging timedate format 
-
 
             // Collect form data as Task object
             const taskData = {
@@ -216,7 +212,6 @@ window.addEventListener("DOMContentLoaded", () => {
                     },
                     body: JSON.stringify(taskData),
                 });
-
                 //read response 
                 const responseBody = await res.json();
 
@@ -227,24 +222,21 @@ window.addEventListener("DOMContentLoaded", () => {
                     errorMessage.classList.remove("d-none");
                     return;
                 }
-
                 // Sucessfully submitted
                 successMessage.innerHTML = `
-            <strong>Task created successfully!</strong><br>
-            <div class="mt-2">
-                <strong>Title:</strong> ${responseBody.title}<br>
-                <strong>Description:</strong> ${responseBody.description}<br>
-                <strong>Status:</strong> ${responseBody.status}<br>
-                <strong>Deadline:</strong> ${new Date(responseBody.deadline).toLocaleString()}
-            </div>
-        `;
+                    <strong>Task created successfully!</strong><br>
+                    <div class="mt-2">
+                        <strong>Title:</strong> ${responseBody.title}<br>
+                        <strong>Description:</strong> ${responseBody.description}<br>
+                        <strong>Status:</strong> ${responseBody.status}<br>
+                        <strong>Deadline:</strong> ${new Date(responseBody.deadline).toLocaleString()}
+                    </div>
+                    `;
                 successMessage.classList.remove("d-none");
-
                 //clear form fields 
                 editingTaskId = null;
                 form.reset();
                 await loadTasks();
-
                 //catch network/ parsing errors 
             } catch (error) {
                 console.error("Fetch or processing error:", error);
@@ -253,10 +245,9 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-
-
         //call load tasks API
         loadTasks();
+        //event listeners and empty values for search function
         filterSearch.addEventListener("input", applyFilter);
         filterSort.addEventListener("change", applyFilter);
         filterStatus.addEventListener("change", applyFilter);
@@ -271,11 +262,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-//Load tasks in list card
+//Load tasks to pass to renderTasks() 
 async function loadTasks() {
     const token = localStorage.getItem("jwtToken");
     try {
-        console.log("Using token:", token);
         const res = await fetch(API_BASE_URL, {
             method: "GET",
             headers: {
@@ -283,33 +273,26 @@ async function loadTasks() {
                 "Content-Type": "application/json"
             }
         });
-
-        //if (res.status === 401 || res.status === 403) {
-        //    window.location.href = "login.html"; // Redirect if token expired
-        //    return;
-        //}
-
+        //fetch JSON data 
         const tasks = await res.json();
         tasksAll = tasks;
+        //render task data 
         renderTasks(tasks);
     } catch (err) {
         console.log("Error loading tasks ", err);
     }
 };
 
-
+//render tasks()- loops through all tasks from loadTasks() and formats and presents them. 
 function renderTasks(tasks) {
     taskList.innerHTML = '';
-
-
-
+    //if no tasks listed:
     if (tasks.length == 0) {
         taskList.textContent = "No tasks listed";
         return
     }
-
+    //format each task into presentable (card) format- VIEW tasks 
     tasks.forEach(task => {
-        //view each task
         const card = document.createElement("div");
         card.classList.add("card", "custom-card", "mb-3");
 
@@ -349,7 +332,7 @@ function renderTasks(tasks) {
         viewDiv.append(title, desc, status, deadline, footerView);
 
 
-        //edit task inline
+        //format tasks for EDITING in line
         const editDiv = document.createElement("div");
         editDiv.classList.add("d-none");
 
@@ -395,12 +378,9 @@ function renderTasks(tasks) {
         cancelBtn.classList.add("btn", "btn-sm", "btn-secondary");
 
         footer.append(saveBtn, cancelBtn);
-
         editDiv.append(titleInput, descInput, statusInput, deadlineInput, footer);
 
-
         //button event listeners
-
         editBtn.addEventListener("click", () => {
             viewDiv.classList.add("d-none");
             editDiv.classList.remove("d-none");
@@ -449,9 +429,8 @@ function renderTasks(tasks) {
             if (!task.id) {
                 alert("Error: Task ID missing from server response.");
                 return;
-
             }
-
+            //pass updated task data to backend 
             const updatedTask = {
                 title: titleInput.value,
                 description: descInput.value,
@@ -475,7 +454,6 @@ function renderTasks(tasks) {
                 if (index !== -1) {
                     tasksAll[index] = { ...task, ...updatedTask };
                 }
-
                 //update view Div
                 title.textContent = updatedTask.title;
                 desc.textContent = updatedTask.description;
@@ -499,29 +477,30 @@ function renderTasks(tasks) {
 // Filter tasks
 function applyFilter() {
     let filtered = [...tasksAll];
-
+    //search by task title 
     const searchTerm = filterSearch.value.trim().toLowerCase();
     if (searchTerm) {
         filtered = filtered.filter(task =>
             task.title.toLowerCase().includes(searchTerm)
         );
     }
+    //search by status vaule 
     const statusVal = filterStatus.value;
     if (statusVal) {
         filtered = filtered.filter(task => task.status === statusVal);
     }
-
+    //sort by deadline date 
     const sortVal = filterSort.value;
     if (sortVal === "deadline_asc") {
         filtered.sort((a, b) => (new Date(a.deadline).getTime() || 0) - (new Date(b.deadline).getTime() || 0));
     } else if (sortVal === "deadline_desc") {
         filtered.sort((a, b) => (new Date(b.deadline).getTime() || 0) - (new Date(a.deadline).getTime() || 0));
     }
-
-
+    //render the filtered tasks 
     renderTasks(filtered);
 };
 
+//navigation update- if logged in, show username and logout. If logged out, show login and register
 function updateNav() {
     const token = localStorage.getItem("jwtToken");
     const username = localStorage.getItem("username");
@@ -531,21 +510,12 @@ function updateNav() {
     const userDisplay = document.getElementById("user-display");
 
     if (token) {
-        console.log("Hiding logged-out-group and showing logged-in-group");
         if (loggedInGroup) loggedInGroup.classList.remove("d-none");
         if (loggedOutGroup) loggedOutGroup.classList.add("d-none");
         if (userDisplay) userDisplay.textContent = `${username || 'User'}`;
     }
     else {
-        console.log("Showing logged-out-group and hiding logged-in-group");
         if (loggedInGroup) loggedInGroup.classList.add("d-none");
         if (loggedOutGroup) loggedOutGroup.classList.remove("d-none");
     }
 };
-
-/*
-if (window.location.pathname.includes("index") || window.location.pathname === "/") {
-    if (!localStorage.getItem("jwtToken")) {
-        window.location.href = "login.html";
-    }
-}*/

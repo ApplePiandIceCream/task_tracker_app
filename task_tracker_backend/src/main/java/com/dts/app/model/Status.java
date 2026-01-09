@@ -1,6 +1,6 @@
 package com.dts.app.model;
 
-//enum for status to minimise errors in manual entry 
+//Status states- enum for status to minimise errors in manual entry 
 public enum Status {
     PENDING, 
     IN_PROGRESS, 

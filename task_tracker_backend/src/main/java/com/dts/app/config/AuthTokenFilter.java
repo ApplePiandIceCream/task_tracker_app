@@ -14,6 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
+/**
+ * Filter that executes once per request to validate JWT tokens
+ * Extracts  token from the Authorization header, validates it, 
+ * and sets the security context for the application
+ */
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
@@ -21,6 +26,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    /**
+     * Core filter logic to intercept requests and verify JWT integrity.
+     * * @param request - incoming request.
+     * @param response - outgoing response.
+     * @param filterChain - chain of other security filters.
+     * @throws ServletException - If  request fails for a servlet-related reason
+     * @throws IOException - If an I/O error occurs during filtering.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
             HttpServletResponse response,
@@ -31,9 +44,12 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateToken(jwt)) {
                 String username = jwtUtils.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                //create auth token using user details (and roles when relevant)
                 UsernamePasswordAuthenticationToken authentication = 
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                //finalise authentication by putting in security context
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
@@ -41,6 +57,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+    /**
+     * Parses the Authorization header to extract  raw JWT string
+     * * @param request - current HTTP request
+     * @return - extracted JWT string if valid, otherwise null
+     */
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {

@@ -40,26 +40,44 @@ public class User {
     }
 
     //Getters and setters: 
+    /**
+     * @return- user ID- created by database 
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @return username of User object
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @return password of user
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * @param id - set user ID 
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * @param newUsername - set Username of user 
+     */
     public void setUsername(String newUsername) {
         this.username = newUsername;
     }
 
+    /** 
+     * @param newPassword - set password of User 
+     */
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }

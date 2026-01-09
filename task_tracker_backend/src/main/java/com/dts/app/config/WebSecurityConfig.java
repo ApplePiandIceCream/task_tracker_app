@@ -17,7 +17,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.List;
 
 
-
+/**
+ * Configuration class for defining the Spring Security architecture
+ * Manages authentication, password encoding, and HTTP security filter chains
+ */
 
 @Configuration
 public class WebSecurityConfig {
@@ -25,20 +28,40 @@ public class WebSecurityConfig {
     CustomUserDetailsService userDetailsService;
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+    /**
+     * Creates bean for  JWT authentication filter
+     * @return An instance of {@link AuthTokenFilter}
+     */
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
+    /**
+     * Configures  AuthenticationManager from the provided configuration
+     * @param authenticationConfiguration - Spring's internal config object
+     * @return -  configured {@link AuthenticationManager}
+     * @throws Exception if the manager cannot be retrieved
+     */
     @Bean
     public AuthenticationManager authenticationManager(
         AuthenticationConfiguration authenticationConfiguration
     ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+    /**
+     * Defines  hashing algorithm for password storage/ comparison
+     * * @return - {@link BCryptPasswordEncoder} instance
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    /**
+     * Defines  HTTP security rules, CORS policies, and session management
+     * @param http - {@link HttpSecurity} object to configure
+     * @return - finalized {@link SecurityFilterChain}
+     * @throws Exception if configuration is invalid
+     */
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,6 +89,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             );
+        //Insert JWT filter before the standard UsernamePasswordAuthenticationFilter
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

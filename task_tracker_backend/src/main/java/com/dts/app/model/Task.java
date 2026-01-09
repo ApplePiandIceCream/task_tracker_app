@@ -20,7 +20,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 
-/** Class supports database mapping (JPA) ; data transfer object for REST API ; server-side input validation (Jakarta)  */
+/** 
+ * Class supports database mapping (JPA) ; data transfer object for REST API ; server-side input validation (Jakarta)  
+*/
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -48,6 +50,7 @@ public class Task {
     @NotNull(message = "You must provide a task deadline")
     private LocalDateTime deadline;
 
+    //One to many relationship with User. 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
@@ -71,50 +74,80 @@ public class Task {
         this.user = user;
     }
 
-    //Getters and setters: 
+    //Getters and setters:
+    
+    /**
+     * @return - unique database primary key for this task
+     */
     public Long getId() {
         return id;
     }
+
+    /**
+     * @return - title of task
+     */
     public String getTitle() {
         return title;
     }
-
+    /**
+     * @return - description of task
+     */
     public String getDescription() {
         return description;
     }
-
+    /**
+     * @return - status of the task
+     */
     public Status getStatus() {
         return status;
     }
-
+    /**
+     * @return - deadline for task
+     */
     public LocalDateTime getDeadline() {
         return deadline;
     }
-
+    /**
+     * @return - unique database primary key for this taskuser object associated with task
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * @param id - primary key to set- managed by the database
+     */
     public void setId(Long id) {
         this.id = id;
     }
-
+    /**
+     * @param newTitle - set title of task
+     */
     public void setTitle(String newTitle) {
         this.title = newTitle;
     }
-
+    /**
+     * @param newDesc - set description of task (optional)
+     */
     public void setDescription(String newDesc) {
         this.description = newDesc;
     }
-
+    /**
+     * @param newStatus - set status of task 
+     */
     public void setStatus(Status newStatus) {
         this.status = newStatus;
     }
-
+    /**
+     * @param newDeadline - set deadline of task 
+     */
     public void setDeadline(LocalDateTime newDeadline) {
         this.deadline = newDeadline;
     }
 
+    /**
+     * @param newUser -set task user 
+     */
     public void setUser(User newUser) {
     this.user = newUser;
     }

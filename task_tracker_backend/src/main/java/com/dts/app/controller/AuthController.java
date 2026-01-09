@@ -10,7 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*")
+/**
+ * Handles Authentication request (Login/ register)
+ * @CrossOrigin allows frontend to talk to this backend 
+ */
+@CrossOrigin(origins = "https://applepiandicecream.github.io", allowCredentials = "true") 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -23,20 +27,33 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtils;
 
+    /**
+     * Authenticate user and return JWT token 
+     * @param user - contains username and plain- text password from login form
+     * @return String containing JWT token if successful 
+     */
     @PostMapping("/signin")
     public String authenticateUser(@RequestBody User user) {
+        //verify credentials against database
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
     );
+    //if valid, retrieve user details and generate JWT signed token 
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     return jwtUtils.generateToken(userDetails.getUsername());
     }
 
+    /**
+     * Create new user account 
+     * @param user- contains new user details from signup form 
+     * @return Success message and redirect to login, or error if username exists. 
+     */
     @PostMapping("/signup")
     public String registerUser(@RequestBody User user) {
+        //prevent duplicate accounts 
         if (userRepository.existsByUsername(user.getUsername())) {
             return "Username is already taken- choose another!";
         }
-
+        //Hash password before saving 
         User newUser = new User(
                 user.getUsername(),
                 encoder.encode(user.getPassword())

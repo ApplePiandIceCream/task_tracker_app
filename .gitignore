@@ -1,3 +1,8 @@
+.env
+*.local
+helpdesk_logs/
+*.log
+
 task_tracker_backend/data/*.mv.db
 task_tracker_backend/data/*.trace.db
 
@@ -14,8 +19,4 @@ task_tracker_frontend/build/
 .DS_Store
 Thumbs.db
 
-.env
-*.local
-helpdesk_logs/
-*.log
 
