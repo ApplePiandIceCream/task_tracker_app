@@ -1,9 +1,9 @@
 (function() {
     const token = localStorage.getItem("jwtToken");
-    const currentFile = window.location.pathname.split("/").pop();
-    const isIndex = currentFile === "index.html" || currentFile === "" || currentFile === "index";
+    const path = window.location.pathname;
+    const isAtHome = path.endsWith("/") || path.includes("index") || path.endsWith("task_tracker_app");
 
-    if (isIndex && !token) {
+    if (isAtHome && !token) {
         window.location.href = "login.html";
     }
 })();
@@ -160,7 +160,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     // main tasks page and event listeners
-    if (path.includes("index")) {
+    if (path.includes("index") || path.endsWith("/") || path.endsWith("task_tracker_app")) {
         const form = document.getElementById("taskForm");
         const DeadlineInput = document.getElementById("deadline");
 
@@ -265,6 +265,7 @@ window.addEventListener("DOMContentLoaded", () => {
 //Load tasks to pass to renderTasks() 
 async function loadTasks() {
     const token = localStorage.getItem("jwtToken");
+    if (!token) return;
     try {
         const res = await fetch(API_BASE_URL, {
             method: "GET",
@@ -273,11 +274,15 @@ async function loadTasks() {
                 "Content-Type": "application/json"
             }
         });
+    if (res.status === 401 || res.status === 403) {
+        handleAuthError();
+        return;
+    }
         //fetch JSON data 
-        const tasks = await res.json();
-        tasksAll = tasks;
-        //render task data 
-        renderTasks(tasks);
+    const tasks = await res.json();
+    tasksAll = tasks;
+    //render task data 
+    renderTasks(tasks);
     } catch (err) {
         console.log("Error loading tasks ", err);
     }
@@ -510,10 +515,12 @@ function updateNav() {
     const loggedOutGroup = document.getElementById("logged-out-group");
     const userDisplay = document.getElementById("user-display");
 
+    const isAuthPage = currentPage.includes("login") || currentPage.includes("register");
+
     if (!token) {
         if (loggedInGroup) loggedInGroup.classList.add("d-none");
         if (loggedOutGroup) loggedOutGroup.classList.remove("d-none");
-        const isAuthPage = currentPage.includes("login") || currentPage.includes("register");
+
         if (!isAuthPage) {
             window.location.href = "login.html";
         }
