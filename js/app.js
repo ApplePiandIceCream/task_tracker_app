@@ -509,13 +509,14 @@ function updateNav() {
     const loggedOutGroup = document.getElementById("logged-out-group");
     const userDisplay = document.getElementById("user-display");
 
-    if (token) {
+    if (!token) {
+        if (loggedInGroup) loggedInGroup.classList.add("d-none");
+        if (loggedOutGroup) loggedOutGroup.classList.remove("d-none");
+        return;   
+    }
+    else {
         if (loggedInGroup) loggedInGroup.classList.remove("d-none");
         if (loggedOutGroup) loggedOutGroup.classList.add("d-none");
         if (userDisplay) userDisplay.textContent = `${username || 'User'}`;
-    }
-    else {
-        if (loggedInGroup) loggedInGroup.classList.add("d-none");
-        if (loggedOutGroup) loggedOutGroup.classList.remove("d-none");
     }
 };
