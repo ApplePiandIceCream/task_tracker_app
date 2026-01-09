@@ -54,9 +54,6 @@ const statusLabel = {
 let editingTaskId = null;
 let tasksAll = [];
 
-//get URL path 
-const path = window.location.pathname.split("/").pop();
-
 //DOM CONTENT LOADED 
 window.addEventListener("DOMContentLoaded", () => {
 //remove protected from body- here only to prevent reloading when clicking on logo link
@@ -532,3 +529,14 @@ function updateNav() {
         if (userDisplay) userDisplay.textContent = `${username || 'User'}`;
     }
 };
+
+
+function handleAuthError() {
+
+    sessionStorage.removeItem("jwtToken");
+    sessionStorage.removeItem("username");
+
+    alert("Session expired. Please log in again.");
+    
+    window.location.href = "login.html";
+}
