@@ -50,11 +50,6 @@ body {
 
 
 
-.card {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
 .custom-card {
     background-color: #f2e9f9;
     color: #190726;
@@ -103,3 +98,13 @@ body {
 body.protected {
     display: none;
 }
+
+
+.custom-footer {
+    background-color: #f9f5fd !important;
+    color: #190726 !important;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
